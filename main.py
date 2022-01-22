@@ -1,7 +1,5 @@
 from jira import JIRA
 
-# Connecting to Jira
-
 projects = ["QC", "WIMG", "OPES"]
 
 ops = {
@@ -160,8 +158,8 @@ def absent_people(team):
     for worker in ops[team]:
         print(worker)
 
-
-def main():
+# For login into Jira api
+def login():
     global jira
 
     email = str(input("Please enter your email:\n"))
@@ -169,30 +167,33 @@ def main():
     jira = JIRA(basic_auth=(email, jira_token),
                 options={'server': "https://seetree.atlassian.net/"})
 
-    QC = 0
-    WIMG = 1
-    OPES = 2
 
-    team = choose_team()
-    absent_people(team)
-    get_user_ID(team)
+def final_JQL():
+    projects = {'QC' : 0, 'WIMG' : 1, 'OPES' : 2}
 
     wantedProject = choose_project()
     print("Please note that the maximum amount of tickets in a single search is limited to 100 tickets\n")
-    if wantedProject == QC:
-        jql = "project = {} AND {} AND {}".format(projects[wantedProject], chose_issuetype(wantedProject),
-                                                  choose_mission())
-    elif wantedProject == WIMG:
-        jql = "project = {}".format(projects[wantedProject])
-    elif wantedProject == OPES:
-        jql = "project = {} AND {}".format(projects[wantedProject], chose_issuetype(wantedProject))
+    if wantedProject == projects['QC']:
+        jql = "project = QC AND {} AND {}".format(chose_issuetype(wantedProject), choose_mission())
+    elif wantedProject == projects['WIMG']:
+        jql = "project = WIMG".format(projects[wantedProject])
+    elif wantedProject == projects['OPES']:
+        jql = "project = OPES AND {}".format(chose_issuetype(wantedProject))
     else:
         jql = "You gave me nothing!!"
         exit(1)
-
     print(jql)
     result = jira.search_issues(jql, expand='changelog', maxResults=100)
+    for ticket in result:
+        print(ticket)
 
+
+def main():
+    login()
+    team = choose_team()
+    absent_people(team)
+    get_user_ID(team)
+    final_JQL()
 
 if __name__ == '__main__':
     main()
