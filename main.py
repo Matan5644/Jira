@@ -1,8 +1,6 @@
 from jira import JIRA
 
 # Connecting to Jira
-jira = JIRA(basic_auth=('matan@seetree.co', 'UqrungRsbSGDQ1mVLAgYD3E7'),
-            options={'server': "https://seetree.atlassian.net/"})
 
 projects = ["QC", "WIMG", "OPES"]
 
@@ -164,6 +162,13 @@ def absent_people(team):
 
 
 def main():
+    global jira
+
+    email = str(input("Please enter your email:\n"))
+    jira_token = str(input("Please enter you jira api token:\n"))
+    jira = JIRA(basic_auth=(email, jira_token),
+                options={'server': "https://seetree.atlassian.net/"})
+
     QC = 0
     WIMG = 1
     OPES = 2
