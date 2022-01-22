@@ -1,6 +1,6 @@
 from jira import JIRA
 
-projects = ["QC", "WIMG", "OPES"]
+projects = {1: 'QC', 2: 'WIMG', 3: 'OPES'}
 
 ops = {
     "Alignment": {"Anastasiia Rodak": ["anrod@ciklum.com", ""],
@@ -83,7 +83,12 @@ ops = {
 # For choosing the project and receiving his index
 def choose_project():
     wantedProject = int(
-        input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n")) - 1
+        input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n"))
+    while wantedProject != 1 and wantedProject != 2 and wantedProject != 3:
+        print("Please enter a vaild option!\n")
+        wantedProject = int(
+            input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n"))
+
     print("Your chosen project is {}".format(projects[wantedProject]))
     return wantedProject
 
@@ -93,11 +98,11 @@ def choose_mission():
     mapping_jql = "\"isMapping[Short text]\" ~ \"True\""
     evidance_jql = "\"isEvidence[Short text]\" ~ \"True\""
     missionType = int(input(
-        "Please choose the mission type that you want to search:\n1 - For mapping mission\n2 - For evidance mission\n")) - 1
+        "Please choose the mission type that you want to search:\n0 - For mapping mission\n1 - For evidance mission\n"))
     while missionType != 1 and missionType != 0:
         missionType = int(input(
-            "Please choose a valid option!\nPlease choose the mission type that you want to search:\n1 - For mapping "
-            "mission\n2 - For evidance mission\n")) - 1
+            "Please choose a valid option!\nPlease choose the mission type that you want to search:\n0 - For mapping "
+            "mission\n1 - For evidance mission\n")) - 1
 
     if missionType == 0:
         return mapping_jql
@@ -108,9 +113,9 @@ def choose_mission():
 # For choosing the available issuetype per project
 def chose_issuetype(wantedProject):
     issuetype = ""
-    if wantedProject == 0:
+    if wantedProject == 1:
         issuetype = "issuetype = Task"
-    elif wantedProject == 2:
+    elif wantedProject == 3:
         wimgTask = int(input("Please choose the wanted task:\n1 - For Story tasks\n2 - For Bug tasks\n"))
         while wimgTask != 1 and wimgTask != 2:
             wimgTask = int(input(
@@ -133,30 +138,46 @@ def get_user_ID(team):
 
 # For choosing the relevant team
 def choose_team():
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     teams = ["Alignment", "Final Review", "Index", "Labeling", "Newcomers", "Refining", "Review Reports", "Scoring",
              "Scoring diagnosis", "Touchups"]
     user_choose = int(input(
         f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - Newcomers\n"
-        f"5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n"))
-
+        + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n"))
+    while user_choose not in numbers:
+        print("Please enter a vaild option!\n")
+        user_choose = int(input(
+            f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
+            f"Newcomers\n "
+            f"5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n"))
     return teams[user_choose]
+
 
 # For removing the absent people from the "ops" dict
 def absent_people(team):
     absent = []
-    for worker in ops[team]:
-        res = int(input("\nIs {} is missing today?\n1 for No \n0 for Yes\n".format(worker)))
-        if res == 0:
-            absent.append(worker)
-    for name in absent:
-        print("Removing {}!!!\n".format(name))
-        ops[team].pop(name)
-    if not ops[team]:
-        print("No one is available today!")
-        exit(1)
-    print("The team today:")
+    absence = int(input("Someone os missing today from the {} team?\n1 for No\n0 for Yes\n".format(team)))
+    while absence != 0 and absence != 1:
+        print("Please enter a vaild option!\n")
+        absence = int(input("Someone os missing today from the {} team?\n1 for No\n0 for Yes\n".format(team)))
+    if absence == 0:
+        for worker in ops[team]:
+            res = int(input("\nIs {} is missing today?\n1 for No\n0 for Yes\n".format(worker)))
+            while res != 0 and res != 1:
+                print("Please enter a vaild option!\n")
+                res = int(input("\nIs {} is missing today?\n1 for No\n0 for Yes\n".format(worker)))
+            if res == 0:
+                absent.append(worker)
+        for name in absent:
+            print("Removing {}!!!\n".format(name))
+            ops[team].pop(name)
+        if not ops[team]:
+            print("No one is available today!")
+            exit(1)
+    print("\nThe team today:")
     for worker in ops[team]:
         print(worker)
+
 
 # For login into Jira api
 def login():
@@ -169,16 +190,15 @@ def login():
 
 
 def final_JQL():
-    projects = {'QC' : 0, 'WIMG' : 1, 'OPES' : 2}
-
     wantedProject = choose_project()
     print("Please note that the maximum amount of tickets in a single search is limited to 100 tickets\n")
-    if wantedProject == projects['QC']:
-        jql = "project = QC AND {} AND {}".format(chose_issuetype(wantedProject), choose_mission())
-    elif wantedProject == projects['WIMG']:
-        jql = "project = WIMG".format(projects[wantedProject])
-    elif wantedProject == projects['OPES']:
-        jql = "project = OPES AND {}".format(chose_issuetype(wantedProject))
+    if wantedProject == 1:
+        jql = "project = {} AND {} AND {}".format(projects[wantedProject], chose_issuetype(wantedProject),
+                                                  choose_mission())
+    elif wantedProject == 2:
+        jql = "project = {}".format(projects[wantedProject])
+    elif wantedProject == 3:
+        jql = "project = {} AND {}".format(projects[wantedProject], chose_issuetype(wantedProject))
     else:
         jql = "You gave me nothing!!"
         exit(1)
@@ -194,6 +214,7 @@ def main():
     absent_people(team)
     get_user_ID(team)
     final_JQL()
+
 
 if __name__ == '__main__':
     main()
