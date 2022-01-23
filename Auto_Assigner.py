@@ -156,8 +156,15 @@ def login():
                 options={'server': "https://seetree.atlassian.net/"})
 
 
+# Checks if res is digit
 def digits_input_validation(res):
     return res.isdigit()
+
+
+# Return filer jql by filterID
+def get_jql(filterID):
+    jql = jira.filter(filterID).raw["jql"]
+    return jql
 
 
 def main():
