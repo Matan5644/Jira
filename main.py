@@ -77,18 +77,25 @@ ops = {
                  "Vira Lyzohub": ["vvil@ciklum.com", ""],
                  "Vitaliya Lozynska": ["vloz@ciklum.com", ""],
                  "Yaroslav Tkachuk": ["ytka@ciklum.com", ""],
-                 "Yurii Martsiv": ["yumar@ciklum.com", ""]}}
+                 "Yurii Martsiv": ["yumar@ciklum.com", ""]},
+
+    "Open": {"Aman Abo Roken": ["aman@seetree.co", ""],
+             "Enab Halabi": ["enab@seetree.co", ""],
+             "Haifa Mansour": ["haifa@seetree.co", ""],
+             "Noor Wehbi": ["noor@seetree.co", ""],
+             "Weam Wehbi": ["weam@seetree.co", ""]}}
 
 
 # For choosing the project and receiving his index
 def choose_project():
-    wantedProject = int(
-        input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n"))
-    while wantedProject != 1 and wantedProject != 2 and wantedProject != 3:
+    wantedProject = input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n")
+    check_input = input_validation(wantedProject)
+    while wantedProject != "1" and wantedProject != "2" and wantedProject != "3" and not check_input:
         print("Please enter a vaild option!\n")
-        wantedProject = int(
-            input("\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n"))
-
+        wantedProject = input(
+            "\nPlease choose the project that you want to use:\n1 - For QC\n2 - For WIMG\n3 - For OPES\n")
+        check_input = input_validation(wantedProject)
+    wantedProject = int(wantedProject)
     print("Your chosen project is {}".format(projects[wantedProject]))
     return wantedProject
 
@@ -97,13 +104,15 @@ def choose_project():
 def choose_mission():
     mapping_jql = "\"isMapping[Short text]\" ~ \"True\""
     evidance_jql = "\"isEvidence[Short text]\" ~ \"True\""
-    missionType = int(input(
-        "Please choose the mission type that you want to search:\n0 - For mapping mission\n1 - For evidance mission\n"))
-    while missionType != 1 and missionType != 0:
-        missionType = int(input(
+    missionType = input(
+        "Please choose the mission type that you want to search:\n0 - For mapping mission\n1 - For evidance mission\n")
+    check_input = input_validation(missionType)
+    while missionType != "1" and missionType != "0" and not check_input:
+        missionType = input(
             "Please choose a valid option!\nPlease choose the mission type that you want to search:\n0 - For mapping "
-            "mission\n1 - For evidance mission\n")) - 1
-
+            "mission\n1 - For evidance mission\n")
+        check_input = input_validation(missionType)
+    missionType = int(missionType)
     if missionType == 0:
         return mapping_jql
     elif missionType == 1:
@@ -116,11 +125,14 @@ def chose_issuetype(wantedProject):
     if wantedProject == 1:
         issuetype = "issuetype = Task"
     elif wantedProject == 3:
-        wimgTask = int(input("Please choose the wanted task:\n1 - For Story tasks\n2 - For Bug tasks\n"))
-        while wimgTask != 1 and wimgTask != 2:
-            wimgTask = int(input(
+        wimgTask = input("Please choose the wanted task:\n1 - For Story tasks\n2 - For Bug tasks\n")
+        check_input = input_validation(wimgTask)
+        while wimgTask != "1" and wimgTask != "2" and not check_input:
+            wimgTask = input(
                 "Please choose a valid option:\nPlease choose the wanted task:\n1 - For Story tasks\n2 - For Bug "
-                "tasks\n"))
+                "tasks\n")
+            check_input = input_validation(wimgTask)
+        wimgTask = int(wimgTask)
         if wimgTask == 1:
             issuetype = "issuetype = Story"
         elif wimgTask == 2:
@@ -138,35 +150,44 @@ def get_user_ID(team):
 
 # For choosing the relevant team
 def choose_team():
-    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     teams = ["Alignment", "Final Review", "Index", "Labeling", "Newcomers", "Refining", "Review Reports", "Scoring",
-             "Scoring diagnosis", "Touchups"]
-    user_choose = int(input(
-        f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - Newcomers\n"
-        + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n"))
-    while user_choose not in numbers:
-        print("Please enter a vaild option!\n")
-        user_choose = int(input(
+             "Scoring diagnosis", "Touchups", "Open"]
+    user_choose = input(
+        f"\nPlease choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - Newcomers\n"
+        + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
+    check_input = input_validation(user_choose)
+    while user_choose not in numbers and not check_input:
+        print("\nPlease enter a vaild option!")
+        user_choose = input(
             f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
             f"Newcomers\n "
-            f"5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n"))
+            f"5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
+        check_input = input_validation(user_choose)
+    user_choose = int(user_choose)
     return teams[user_choose]
 
 
 # For removing the absent people from the "ops" dict
 def absent_people(team):
     absent = []
-    absence = int(input("Someone os missing today from the {} team?\n1 for No\n0 for Yes\n".format(team)))
-    while absence != 0 and absence != 1:
-        print("Please enter a vaild option!\n")
-        absence = int(input("Someone os missing today from the {} team?\n1 for No\n0 for Yes\n".format(team)))
-    if absence == 0:
+    absence = input("\nSomeone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
+    input_check = input_validation(absence)
+    while absence != "0" and absence != "1" and not input_check:
+        print("\nPlease enter a vaild option!")
+        absence = input("Someone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
+        input_check = input_validation(absence)
+    absence = int(absence)
+    if absence == 1:
         for worker in ops[team]:
-            res = int(input("\nIs {} is missing today?\n1 for No\n0 for Yes\n".format(worker)))
-            while res != 0 and res != 1:
-                print("Please enter a vaild option!\n")
-                res = int(input("\nIs {} is missing today?\n1 for No\n0 for Yes\n".format(worker)))
-            if res == 0:
+            res = input("\nIs {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
+            input_check = input_validation(res)
+            while res != "0" and res != "1" and not input_check:
+                print("\nPlease enter a vaild option!")
+                res = input("Is {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
+                input_check = input_validation(res)
+            res = int(res)
+            if res == 1:
                 absent.append(worker)
         for name in absent:
             print("Removing {}!!!\n".format(name))
@@ -184,7 +205,7 @@ def login():
     global jira
 
     email = str(input("Please enter your email:\n"))
-    jira_token = str(input("Please enter you jira api token:\n"))
+    jira_token = str(input("\nPlease enter you jira api token:\n"))
     jira = JIRA(basic_auth=(email, jira_token),
                 options={'server': "https://seetree.atlassian.net/"})
 
@@ -206,6 +227,10 @@ def final_JQL():
     result = jira.search_issues(jql, expand='changelog', maxResults=100)
     for ticket in result:
         print(ticket)
+
+
+def input_validation(res):
+    return res.isdigit()
 
 
 def main():
