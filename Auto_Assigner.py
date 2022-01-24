@@ -1,3 +1,5 @@
+from itertools import count
+
 from jira import JIRA
 
 projects = {1: 'QC', 2: 'WIMG', 3: 'OPES'}
@@ -85,16 +87,34 @@ ops = {
              "Noor Wehbi": ["noor@seetree.co", ""],
              "Weam Wehbi": ["weam@seetree.co", ""]}}
 
+filters = {"Alignment": "11111",  # TODO: Add all the filters to each team
+           "Final_Review": "",
+           "Index": "",
+           "Labeling": "",
+           "Refining": "",
+           "Review_Reports": "",
+           "Scoring": "",
+           "Scoring_Diagnosis": "",
+           "Touchups": "",
+           "Open": ""}
+
+
+# class Worker: # TODO: Create class for our workers
+#     def __init__(self, name, email, user_id, amount_of_tickets):
+#         self.name = name
+#         self.email = email
+#         self.user_id = user_id
+#         self.amount_of_tickets = amount_of_tickets
+
 
 # For getting userID by his email
 def get_user_ID(team):
-    print("\n")
     for worker in ops[team]:
         ops[team][worker][1] = jira._get_user_id(ops[team][worker][0])
         print(ops[team][worker])
 
 
-# For choosing the relevant team
+# For choosing the relevant team - return a string with the wanted team name
 def choose_team():
     numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     teams = ["Alignment", "Final Review", "Index", "Labeling", "Newcomers", "Refining", "Review Reports", "Scoring",
@@ -119,23 +139,23 @@ def absent_people(team):
     absent = []
     absence = input("\nSomeone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
     input_check = digits_input_validation(absence)
-    while absence != "0" and absence != "1" and not input_check:
+    while absence != "0" and absence != "1" and not input_check:  # For checking invalid inputs
         print("\nPlease enter a vaild option!")
         absence = input("Someone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
         input_check = digits_input_validation(absence)
     absence = int(absence)
-    if absence == 1:
+    if absence == 1:  # If someone is missing
         for worker in ops[team]:
             res = input("\nIs {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
             input_check = digits_input_validation(res)
-            while res != "0" and res != "1" and not input_check:
+            while res != "0" and res != "1" and not input_check:  # For checking invalid inputs
                 print("\nPlease enter a vaild option!")
                 res = input("Is {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
                 input_check = digits_input_validation(res)
             res = int(res)
             if res == 1:
                 absent.append(worker)
-        for name in absent:
+        for name in absent:  # Removing the missing people from ops dictionary
             print("Removing {}!!!\n".format(name))
             ops[team].pop(name)
         if not ops[team]:
@@ -144,6 +164,8 @@ def absent_people(team):
     print("\nThe team today:")
     for worker in ops[team]:
         print(worker)
+    print("\n")
+    return ops
 
 
 # For login into Jira api
@@ -167,8 +189,48 @@ def get_jql(filterID):
     return jql
 
 
+# Receiving jql string and returning list of the tickets in the jql
+def get_tickets(jql):
+    i = 0
+    ticket_list = []
+    res = jira.search_issues(jql)
+    if not res:
+        print("There are no tickets here!")
+    else:
+        print("These are the tickets the jql:")
+        for issue in res:  # Creates list of the tickets in the input jql
+            ticket_list.append(issue)
+            print(ticket_list[i])
+            i += 1
+    return ticket_list
+
+
+# Receives username, user key, jql and return the amount of tickets for the person
+def get_tickets_amount(user_name, user_key, team_jql):
+    print("\n" + user_name)
+    jql = team_jql.split(" assignee = EMPTY")
+    user_tickets = get_tickets(jql[0] + f" assignee = {user_key}")
+    user_tickets_amount = len(user_tickets)
+    if user_tickets_amount == 0:
+        print(f"{user_name} has no tickets!")
+    else:
+        print(str(user_name) + f"'s amount of tickets: {user_tickets_amount}")
+    return user_tickets_amount
+
+
+# Receives team name and return the amount of tickets of each user in the team
+def get_team_assignments_amounts(team_name):
+    index = 0
+    for user in ops[team_name]:
+        get_tickets_amount(list(ops[team_name])[index], ops[team_name][user][1], filters[team_name])
+        index += 1
+
+
+# TODO: Add function that will assignee the tickets by the amount of tickets
+
 def main():
     login()
+    a = get_jql("11111")
     team = choose_team()
     absent_people(team)
     get_user_ID(team)
