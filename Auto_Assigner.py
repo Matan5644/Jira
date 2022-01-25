@@ -1,91 +1,88 @@
-from itertools import count
-
 from jira import JIRA
+import json
 
-projects = {1: 'QC', 2: 'WIMG', 3: 'OPES'}
-
-ops = {
-    "Alignment": {"Anastasiia Rodak": ["anrod@ciklum.com", ""],
-                  "Daryna Vozdihan": ["dvoz@ciklum.com", ""],
-                  "Liliia Zadorozhna": ["liz@ciklum.com", ""],
-                  "Natalia Didych": ["ndi@ciklum.com", ""],
-                  "Oksana Levchenko": ["oksl@ciklum.com", ""],
-                  "Yulia Krupa": ["yukru@ciklum.com", ""]},
-
-    "Final_Review": {"Andrii Mandolina": ["anman@ciklum.com", ""],
-                     "Iryna Kachmar": ["ikac@ciklum.com", ""],
-                     "Iryna Kolida": ["ikol@ciklum.com", ""],
-                     "Oleksandr Kukharchuk": ["okuk@ciklum.com", ""],
-                     "Rostyslav Hasiuk": ["rhas@ciklum.com", ""],
-                     "Yaryna Tkachyk": ["yatk@ciklum.com", ""]},
-
-    "Index": {"Anastasiia Movchan": ["amov@ciklum.com", ""],
-              "Anastasiia Shelkeyeva": ["ashel@ciklum.com", ""],
-              "Dmytro Husakivskyi": ["dhus@ciklum.com", ""],
-              "Inna Pas": ["inp@ciklum.com", ""],
-              "Iryna Bolyukh": ["irbo@ciklum.com", ""],
-              "Kateryna Hulchuk": ["khul@ciklum.com", ""],
-              "Oksana Puchynska": ["okpu@ciklum.com", ""],
-              "Olena Frankiv": ["ofr@ciklum.com", ""],
-              "Tetiana Iarmoliuk": ["teia@ciklum.com", ""],
-              "Valeriia Feshchenko": ["vafe@ciklum.com", ""]},
-
-    "Labeling": {"Alisa Dobrovolska": ["aldob@ciklum.com", ""],
-                 "Tetyana Tananayska": ["tta@ciklum.com", ""],
-                 "Tetyana Tkachenko": ["ttka@ciklum.com", ""],
-                 "Yuriy Bilyk ": ["yubil@ciklum.com", ""]},
-
-    "Newcomers": {"Lidiia Fedorova": ["life@ciklum.com", ""],
-                  "Olena Shkarpinets": ["olshk@ciklum.com", ""],
-                  "Rostyslav Barabash": ["rbar@ciklum.com", ""],
-                  "Tetiana Petriv": ["tatp@ciklum.com", ""],
-                  "Uliana Komiakovych": ["uko@ciklum.com", ""]},
-
-    "Refining": {"Andrii Nikolaiev": ["annik@ciklum.com", ""],
-                 "Dmytro Bushtyn": ["dmbus@ciklum.com", ""],
-                 "Khrystyna Marynovych": ["khrm@ciklum.com", ""],
-                 "Lyubomyra Klymkovych": ["lykl@ciklum.com", ""],
-                 "Oksana Moravska": ["oxm@ciklum.com", ""]},
-
-    "Review_Reports": {"Inna Burlaka": ["inbu@ciklum.com", ""],
-                       "Khrystyna Tsebak": ["khts@ciklum.com", ""],
-                       "Lev Kuts": ["leku@ciklum.com", ""],
-                       "Volodymyr Ploshchanskyi": ["vopl@ciklum.com", ""]},
-
-    "Scoring": {"Alina Tsaruk": ["altsa@ciklum.com", ""],
-                "Anastasiia Kauta": ["akau@ciklum.com", ""],
-                "Anastasiya Ilnytska": ["anil@ciklum.com", ""],
-                "Andrii Ilchyshyn": ["ailc@ciklum.com", ""],
-                "Nazar Khibeba": ["khn@ciklum.com", ""],
-                "Olga Kuzmyn": ["olgku@ciklum.com", ""],
-                "Olga Martyniuk": ["olgma@ciklum.com", ""],
-                "Sofia Kalanchova": ["soka@ciklum.com", ""],
-                "Solomiia Zakharchyn": ["soza@ciklum.com", ""],
-                "Vasyl Panko": ["vapan@ciklum.com", ""]},
-
-    "Scoring_Diagnosis": {"Ivan Batiuchok": ["ibat@ciklum.com", ""],
-                          "Kateryna Lys": ["klys@ciklum.com", ""],
-                          "Marta Susulovska": ["msus@ciklum.com", ""],
-                          "Olga Zhelem": ["olgz@ciklum.com", ""]},
-
-    "Touchups": {"Hanna Ellanska": ["hel@ciklum.com", ""],
-                 "Kateryna Buriak": ["kabu@ciklum.com", ""],
-                 "Mariana Mrii": ["mmr@ciklum.com", ""],
-                 "Mariia Bakush": ["mabak@ciklum.com", ""],
-                 "Polina Osipchuk": ["poos@ciklum.com", ""],
-                 "Roman Oliinyk": ["roli@ciklum.com", ""],
-                 "Uliana Samotii": ["uls@ciklum.com", ""],
-                 "Valeriia Piskunova": ["vpis@ciklum.com", ""],
-                 "Vira Lyzohub": ["vvil@ciklum.com", ""],
-                 "Vitaliya Lozynska": ["vloz@ciklum.com", ""],
-                 "Yaroslav Tkachuk": ["ytka@ciklum.com", ""],
-                 "Yurii Martsiv": ["yumar@ciklum.com", ""]},
-
-    "Open": {"Aman Abo Roken": ["aman@seetree.co", ""],
-             "Enab Halabi": ["enab@seetree.co", ""],
-             "Haifa Mansour": ["haifa@seetree.co", ""],
-             "Noor Wehbi": ["noor@seetree.co", ""],
-             "Weam Wehbi": ["weam@seetree.co", ""]}}
+# ops = {
+#     "Alignment": {"Anastasiia Rodak": ["anrod@ciklum.com", ""],
+#                   "Daryna Vozdihan": ["dvoz@ciklum.com", ""],
+#                   "Liliia Zadorozhna": ["liz@ciklum.com", ""],
+#                   "Natalia Didych": ["ndi@ciklum.com", ""],
+#                   "Oksana Levchenko": ["oksl@ciklum.com", ""],
+#                   "Yulia Krupa": ["yukru@ciklum.com", ""]},
+#
+#     "Final_Review": {"Andrii Mandolina": ["anman@ciklum.com", ""],
+#                      "Iryna Kachmar": ["ikac@ciklum.com", ""],
+#                      "Iryna Kolida": ["ikol@ciklum.com", ""],
+#                      "Oleksandr Kukharchuk": ["okuk@ciklum.com", ""],
+#                      "Rostyslav Hasiuk": ["rhas@ciklum.com", ""],
+#                      "Yaryna Tkachyk": ["yatk@ciklum.com", ""]},
+#
+#     "Index": {"Anastasiia Movchan": ["amov@ciklum.com", ""],
+#               "Anastasiia Shelkeyeva": ["ashel@ciklum.com", ""],
+#               "Dmytro Husakivskyi": ["dhus@ciklum.com", ""],
+#               "Inna Pas": ["inp@ciklum.com", ""],
+#               "Iryna Bolyukh": ["irbo@ciklum.com", ""],
+#               "Kateryna Hulchuk": ["khul@ciklum.com", ""],
+#               "Oksana Puchynska": ["okpu@ciklum.com", ""],
+#               "Olena Frankiv": ["ofr@ciklum.com", ""],
+#               "Tetiana Iarmoliuk": ["teia@ciklum.com", ""],
+#               "Valeriia Feshchenko": ["vafe@ciklum.com", ""]},
+#
+#     "Labeling": {"Alisa Dobrovolska": ["aldob@ciklum.com", ""],
+#                  "Tetyana Tananayska": ["tta@ciklum.com", ""],
+#                  "Tetyana Tkachenko": ["ttka@ciklum.com", ""],
+#                  "Yuriy Bilyk ": ["yubil@ciklum.com", ""]},
+#
+#     "Newcomers": {"Lidiia Fedorova": ["life@ciklum.com", ""],
+#                   "Olena Shkarpinets": ["olshk@ciklum.com", ""],
+#                   "Rostyslav Barabash": ["rbar@ciklum.com", ""],
+#                   "Tetiana Petriv": ["tatp@ciklum.com", ""],
+#                   "Uliana Komiakovych": ["uko@ciklum.com", ""]},
+#
+#     "Refining": {"Andrii Nikolaiev": ["annik@ciklum.com", ""],
+#                  "Dmytro Bushtyn": ["dmbus@ciklum.com", ""],
+#                  "Khrystyna Marynovych": ["khrm@ciklum.com", ""],
+#                  "Lyubomyra Klymkovych": ["lykl@ciklum.com", ""],
+#                  "Oksana Moravska": ["oxm@ciklum.com", ""]},
+#
+#     "Review_Reports": {"Inna Burlaka": ["inbu@ciklum.com", ""],
+#                        "Khrystyna Tsebak": ["khts@ciklum.com", ""],
+#                        "Lev Kuts": ["leku@ciklum.com", ""],
+#                        "Volodymyr Ploshchanskyi": ["vopl@ciklum.com", ""]},
+#
+#     "Scoring": {"Alina Tsaruk": ["altsa@ciklum.com", ""],
+#                 "Anastasiia Kauta": ["akau@ciklum.com", ""],
+#                 "Anastasiya Ilnytska": ["anil@ciklum.com", ""],
+#                 "Andrii Ilchyshyn": ["ailc@ciklum.com", ""],
+#                 "Nazar Khibeba": ["khn@ciklum.com", ""],
+#                 "Olga Kuzmyn": ["olgku@ciklum.com", ""],
+#                 "Olga Martyniuk": ["olgma@ciklum.com", ""],
+#                 "Sofia Kalanchova": ["soka@ciklum.com", ""],
+#                 "Solomiia Zakharchyn": ["soza@ciklum.com", ""],
+#                 "Vasyl Panko": ["vapan@ciklum.com", ""]},
+#
+#     "Scoring_Diagnosis": {"Ivan Batiuchok": ["ibat@ciklum.com", ""],
+#                           "Kateryna Lys": ["klys@ciklum.com", ""],
+#                           "Marta Susulovska": ["msus@ciklum.com", ""],
+#                           "Olga Zhelem": ["olgz@ciklum.com", ""]},
+#
+#     "Touchups": {"Hanna Ellanska": ["hel@ciklum.com", ""],
+#                  "Kateryna Buriak": ["kabu@ciklum.com", ""],
+#                  "Mariana Mrii": ["mmr@ciklum.com", ""],
+#                  "Mariia Bakush": ["mabak@ciklum.com", ""],
+#                  "Polina Osipchuk": ["poos@ciklum.com", ""],
+#                  "Roman Oliinyk": ["roli@ciklum.com", ""],
+#                  "Uliana Samotii": ["uls@ciklum.com", ""],
+#                  "Valeriia Piskunova": ["vpis@ciklum.com", ""],
+#                  "Vira Lyzohub": ["vvil@ciklum.com", ""],
+#                  "Vitaliya Lozynska": ["vloz@ciklum.com", ""],
+#                  "Yaroslav Tkachuk": ["ytka@ciklum.com", ""],
+#                  "Yurii Martsiv": ["yumar@ciklum.com", ""]},
+#
+#     "Open": {"Aman Abo Roken": ["aman@seetree.co", ""],
+#              "Enab Halabi": ["enab@seetree.co", ""],
+#              "Haifa Mansour": ["haifa@seetree.co", ""],
+#              "Noor Wehbi": ["noor@seetree.co", ""],
+#              "Weam Wehbi": ["weam@seetree.co", ""]}}
 
 filters = {"Alignment": "11111",  # TODO: Add all the filters to each team
            "Final_Review": "",
@@ -98,13 +95,31 @@ filters = {"Alignment": "11111",  # TODO: Add all the filters to each team
            "Touchups": "",
            "Open": ""}
 
+workers = {"Alignment": [],
+           "Final_Review": [],
+           "Index": [],
+           "Labeling": [],
+           "Newcomers": [],
+           "Refining": [],
+           "Review_Reports": [],
+           "Scoring": [],
+           "Scoring_Diagnosis": [],
+           "Touchups": [],
+           "Open": []}
 
-# class Worker: # TODO: Create class for our workers
-#     def __init__(self, name, email, user_id, amount_of_tickets):
-#         self.name = name
-#         self.email = email
-#         self.user_id = user_id
-#         self.amount_of_tickets = amount_of_tickets
+
+class Worker:  
+    def __init__(self, name, team, email, key, amount_of_tickets):
+        self.name = name
+        self.team = team
+        self.email = email
+        self.key = key
+        self.amount_of_tickets = amount_of_tickets
+
+
+class Team(Worker):
+    def __init__(self, name, team, email, key, amount_of_tickets):
+        Worker.__init__(self, name, team, email, key, amount_of_tickets)
 
 
 # For getting userID by his email
@@ -219,21 +234,51 @@ def get_tickets_amount(user_name, user_key, team_jql):
 
 
 # Receives team name and return the amount of tickets of each user in the team
-def get_team_assignments_amounts(team_name):
-    index = 0
+def get_team_assignments_amounts(team_name, team_jql):
     for user in ops[team_name]:
-        get_tickets_amount(list(ops[team_name])[index], ops[team_name][user][1], filters[team_name])
-        index += 1
+        get_tickets_amount(user["name"], user["key"], get_jql("11111"))
+
+
+# Builds the Analysis Center File in case of need
+def workers_constructor():
+    for team in ops:
+        for name in ops[team]:
+            email = ops[team][name][0]
+            key = jira._get_user_id(email)
+            print(name)
+            print(team)
+            print(email)
+            print("\n")
+            x = Worker(name, team, email, key, 0)
+            workers[team].append(x.__dict__)
+
+
+# Transforms the workers' dict to json file
+def workers_to_json():
+    json_workers = json.dumps(workers)
+    f = open("Analysis_Center.txt", "x")
+    f.write(json_workers)
+    f.close()
+
+
+# Creates the ops dictionary
+def read_analisys_center():
+    f = open("Analysis_Center.txt")
+    analysis = json.load(f)
+    f.close()
+    return analysis
 
 
 # TODO: Add function that will assignee the tickets by the amount of tickets
 
 def main():
+    global ops
     login()
-    a = get_jql("11111")
+    ops = read_analisys_center()
     team = choose_team()
     absent_people(team)
-    get_user_ID(team)
+    team_jql = get_jql(filters[team])
+    get_team_assignments_amounts(team, team_jql)
 
 
 if __name__ == '__main__':
