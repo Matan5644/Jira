@@ -108,7 +108,7 @@ workers = {"Alignment": [],
            "Open": []}
 
 
-class Worker:  
+class Worker:
     def __init__(self, name, team, email, key, amount_of_tickets):
         self.name = name
         self.team = team
@@ -123,7 +123,7 @@ class Team(Worker):
 
 
 # For getting userID by his email
-def get_user_ID(team):
+def get_user_id(team):
     for worker in ops[team]:
         ops[team][worker][1] = jira._get_user_id(ops[team][worker][0])
         print(ops[team][worker])
@@ -139,7 +139,7 @@ def choose_team():
         + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
     check_input = digits_input_validation(user_choose)
     while user_choose not in numbers and not check_input:
-        print("\nPlease enter a vaild option!")
+        print("\nPlease enter a valid option!")
         user_choose = input(
             f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
             f"Newcomers\n "
@@ -155,7 +155,7 @@ def absent_people(team):
     absence = input("\nSomeone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
     input_check = digits_input_validation(absence)
     while absence != "0" and absence != "1" and not input_check:  # For checking invalid inputs
-        print("\nPlease enter a vaild option!")
+        print("\nPlease enter a valid option!")
         absence = input("Someone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
         input_check = digits_input_validation(absence)
     absence = int(absence)
@@ -164,7 +164,7 @@ def absent_people(team):
             res = input("\nIs {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
             input_check = digits_input_validation(res)
             while res != "0" and res != "1" and not input_check:  # For checking invalid inputs
-                print("\nPlease enter a vaild option!")
+                print("\nPlease enter a valid option!")
                 res = input("Is {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
                 input_check = digits_input_validation(res)
             res = int(res)
@@ -199,8 +199,8 @@ def digits_input_validation(res):
 
 
 # Return filer jql by filterID
-def get_jql(filterID):
-    jql = jira.filter(filterID).raw["jql"]
+def get_jql(filter_id):
+    jql = jira.filter(filter_id).raw["jql"]
     return jql
 
 
@@ -236,7 +236,9 @@ def get_tickets_amount(user_name, user_key, team_jql):
 # Receives team name and return the amount of tickets of each user in the team
 def get_team_assignments_amounts(team_name, team_jql):
     for user in ops[team_name]:
-        get_tickets_amount(user["name"], user["key"], get_jql("11111"))
+        user["amount_of_tickets"] = get_tickets_amount(user["name"], user["key"], team_jql)
+        print(f"\n{user['name']} has:")
+        print(str(user["amount_of_tickets"]) + " assigned tickets")
 
 
 # Builds the Analysis Center File in case of need
