@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 from jira import JIRA
 import json
 
@@ -178,7 +180,7 @@ def absent_people(team):
             exit(1)
     print("\nThe team today:")
     for worker in ops[team]:
-        print(worker)
+        print(worker['name'])
     print("\n")
     return ops
 
@@ -228,8 +230,10 @@ def get_tickets_amount(user_name, user_key, team_jql):
     user_tickets_amount = len(user_tickets)
     if user_tickets_amount == 0:
         print(f"{user_name} has no tickets!")
+        time.sleep(2)
     else:
         print(str(user_name) + f"'s amount of tickets: {user_tickets_amount}")
+        time.sleep(2)
     return user_tickets_amount
 
 
@@ -237,8 +241,8 @@ def get_tickets_amount(user_name, user_key, team_jql):
 def get_team_assignments_amounts(team_name, team_jql):
     for user in ops[team_name]:
         user["amount_of_tickets"] = get_tickets_amount(user["name"], user["key"], team_jql)
-        print(f"\n{user['name']} has:")
-        print(str(user["amount_of_tickets"]) + " assigned tickets")
+        # print(f"\n{user['name']} has:")
+        # print(str(user["amount_of_tickets"]) + " assigned tickets")
 
 
 # Builds the Analysis Center File in case of need
@@ -271,7 +275,46 @@ def read_analisys_center():
     return analysis
 
 
-# TODO: Add function that will assignee the tickets by the amount of tickets
+# Returns the email of the worker with the least amount of tickets
+def find_least_assignments(team):
+    min_worker = ops[team][0]
+    for worker in ops[team]:
+        if worker['amount_of_tickets'] < min_worker['amount_of_tickets']:
+            min_worker = worker
+    print(
+        f"\n{min_worker['name']} has the lowest amount of tickets! She has {min_worker['amount_of_tickets']} tickets.")
+    return min_worker['email']
+
+
+# Assigns the ticket with the highest latency to the person with the least amount of tickets
+def assignee_to_lowest_worker(worker_email, team_jql):
+    unassignee_issues_list = get_tickets(team_jql)
+    if not unassignee_issues_list:
+        print("\nCurrently, there are no unassigned tickets.")
+        return
+    highest_days_since_shooting_ticket = str(unassignee_issues_list[0])
+    jira.assign_issue(highest_days_since_shooting_ticket, worker_email)
+
+
+# Auto assigner every 5 min
+def auto_assigner(team, team_jql):
+    five_minutes = 300
+    second = 0
+    get_team_assignments_amounts(team, team_jql)
+    min_worker = find_least_assignments(team)
+    assignee_to_lowest_worker(min_worker, team_jql)
+    while second < five_minutes:
+        print(f"Checking again in {five_minutes - second} seconds\n")
+        time.sleep(1)
+        second += 1
+
+
+def get_current_time():
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    int_current_time = int(current_time[0:2])
+    return int_current_time
+
 
 def main():
     global ops
@@ -280,7 +323,9 @@ def main():
     team = choose_team()
     absent_people(team)
     team_jql = get_jql(filters[team])
-    get_team_assignments_amounts(team, team_jql)
+    current_time = get_current_time()
+    while (current_time >= 9) and (current_time <= 18):
+        auto_assigner(team, team_jql)
 
 
 if __name__ == '__main__':
