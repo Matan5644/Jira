@@ -132,7 +132,7 @@ def get_user_id(team):
 
 
 # For choosing the relevant team - return a string with the wanted team name
-def choose_team():
+def team_selector():
     numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     teams = ["Alignment", "Final Review", "Index", "Labeling", "Newcomers", "Refining", "Review Reports", "Scoring",
              "Scoring diagnosis", "Touchups", "Open"]
@@ -207,7 +207,7 @@ def get_jql(filter_id):
 
 
 # Receiving jql string and returning list of the tickets in the jql
-def get_tickets(jql):
+def get_jql_tickets(jql):
     i = 0
     ticket_list = []
     res = jira.search_issues(jql)
@@ -223,10 +223,10 @@ def get_tickets(jql):
 
 
 # Receives username, user key, jql and return the amount of tickets for the person
-def get_tickets_amount(user_name, user_key, team_jql):
+def get_users_tickets_amount(user_name, user_key, team_jql):
     print("\n" + user_name)
     jql = team_jql.split(" assignee = EMPTY")
-    user_tickets = get_tickets(jql[0] + f" assignee = {user_key}")
+    user_tickets = get_jql_tickets(jql[0] + f" assignee = {user_key}")
     user_tickets_amount = len(user_tickets)
     if user_tickets_amount == 0:
         print(f"{user_name} has no tickets!")
@@ -240,7 +240,7 @@ def get_tickets_amount(user_name, user_key, team_jql):
 # Receives team name and return the amount of tickets of each user in the team
 def get_team_assignments_amounts(team_name, team_jql):
     for user in ops[team_name]:
-        user["amount_of_tickets"] = get_tickets_amount(user["name"], user["key"], team_jql)
+        user["amount_of_tickets"] = get_users_tickets_amount(user["name"], user["key"], team_jql)
         # print(f"\n{user['name']} has:")
         # print(str(user["amount_of_tickets"]) + " assigned tickets")
 
@@ -276,7 +276,7 @@ def read_analisys_center():
 
 
 # Returns the email of the worker with the least amount of tickets
-def find_least_assignments(team):
+def find_least_assignments_man(team):
     min_worker = ops[team][0]
     for worker in ops[team]:
         if worker['amount_of_tickets'] < min_worker['amount_of_tickets']:
@@ -287,8 +287,8 @@ def find_least_assignments(team):
 
 
 # Assigns the ticket with the highest latency to the person with the least amount of tickets
-def assignee_to_lowest_worker(worker_email, team_jql):
-    unassignee_issues_list = get_tickets(team_jql)
+def assignee_oldest_ticket(worker_email, team_jql):
+    unassignee_issues_list = get_jql_tickets(team_jql)
     if not unassignee_issues_list:
         print("\nCurrently, there are no unassigned tickets.")
         return
@@ -301,8 +301,8 @@ def auto_assigner(team, team_jql):
     five_minutes = 300
     second = 0
     get_team_assignments_amounts(team, team_jql)
-    min_worker = find_least_assignments(team)
-    assignee_to_lowest_worker(min_worker, team_jql)
+    min_worker = find_least_assignments_man(team)
+    assignee_oldest_ticket(min_worker, team_jql)
     while second < five_minutes:
         print(f"Checking again in {five_minutes - second} seconds\n")
         time.sleep(1)
@@ -320,7 +320,7 @@ def main():
     global ops
     login()
     ops = read_analisys_center()
-    team = choose_team()
+    team = team_selector()
     absent_people(team)
     team_jql = get_jql(filters[team])
     current_time = get_current_time()
