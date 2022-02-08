@@ -1,0 +1,51 @@
+1643280292880	geckodriver	INFO	Listening on 127.0.0.1:51330
+1643280779339	geckodriver	INFO	Listening on 127.0.0.1:51384
+1643281222349	geckodriver	INFO	Listening on 127.0.0.1:51543
+1643281265081	geckodriver	INFO	Listening on 127.0.0.1:51582
+1643281553524	geckodriver	INFO	Listening on 127.0.0.1:51612
+1643281556628	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51613" "-no-remote" "-profile" "C:\\Users\\Free\\AppData\\Local\\Temp\\rust_mozprofilefWaVHi"
+1643281556942	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Free\\AppData\\Local\\Temp\\rust_mozprofilefWaVHi\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51613/devtools/browser/12cf65f3-5c45-485f-ac12-d1051a01428a
+1643281559280	Marionette	INFO	Listening on port 51618
+1643281559360	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript warning: https://accounts.google.com/o/oauth2/auth?state=eyJzb3VyY2UiOiJsb2dpblNjcmVlbiIsInVzZXJGbG93IjpudWxsLCJpc1NsYWNrQXBwU291cmNlIjpudWxsLCJxdWVyeSI6Ij9hcHBsaWNhdGlvbj1qaXJhJmNvbnRpbnVlPWh0dHBzOi8vc2VldHJlZS5hdGxhc3NpYW4ubmV0L2xvZ2luP3JlZGlyZWN0Q291bnQlM0QxJTI2ZGVzdC11cmwlM0RodHRwcyUyNTNBJTI1MkYlMjUyRnNlZXRyZWUuYXRsYXNzaWFuLm5ldCUyNTJGamlyYSUyNTJGeW91ci13b3JrJTI2YXBwbGljYXRpb24lM0RqaXJhJmxvZ2luVHlwZT1nb29nbGVCdXR0b24mbG9naW5faGludD0mcHJvbXB0PXNlbGVjdF9hY2NvdW50JnNvdXJjZT1sb2dpblNjcmVlbiIsImNzcmZUb2tlbiI6IjY1OWE1MWIxMjQ4NDAyNWM4NDE3MzVlZThkMzIwMTQzNjczMDA3ZmNlYjJjZjhjZGYyZjBhZTcyY2M3ZDJhNTIiLCJsb2dpblR5cGUiOiJnb29nbGVCdXR0b24iLCJhbm9ueW1vdXNJZCI6ImU2YTUwZTNmLTRhMzYtNDk4Mi1iOWExLTI0NTliOTUwYzllMCIsIm1hcmtldGluZ0NvbnNlbnQiOm51bGwsImV4cGVyaW1lbnQiOm51bGx9&scope=profile+email&prompt=select_account&redirect_uri=https%3A%2F%2Fid.atlassian.com%2Flogin%2Fgoogle&client_id=596149463257-9oquqfivs9on8t8erq23c8qso6vk3cp1.apps.googleusercontent.com&code_challenge=-83j-rMV4rrwtiNZ_3ezWb7M3hWjxfsLL0e588GcrOo&code_challenge_method=S256&response_type=code&flowName=GeneralOAuthFlow line 1 > eval line 2405 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/modules/LoginManagerChild.jsm, line 194: NS_ERROR_XPC_JAVASCRIPT_ERROR_WITH_DETAILS: [JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]'[JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]' when calling method: [nsIAutoCompletePopup::selectedIndex]
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript warning: https://accounts.google.com/o/oauth2/auth?state=eyJzb3VyY2UiOiJsb2dpblNjcmVlbiIsInVzZXJGbG93IjpudWxsLCJpc1NsYWNrQXBwU291cmNlIjpudWxsLCJxdWVyeSI6Ij9hcHBsaWNhdGlvbj1qaXJhJmNvbnRpbnVlPWh0dHBzOi8vc2VldHJlZS5hdGxhc3NpYW4ubmV0L2xvZ2luP3JlZGlyZWN0Q291bnQlM0QxJTI2ZGVzdC11cmwlM0RodHRwcyUyNTNBJTI1MkYlMjUyRnNlZXRyZWUuYXRsYXNzaWFuLm5ldCUyNTJGamlyYSUyNTJGeW91ci13b3JrJTI2YXBwbGljYXRpb24lM0RqaXJhJmxvZ2luVHlwZT1nb29nbGVCdXR0b24mbG9naW5faGludD0mcHJvbXB0PXNlbGVjdF9hY2NvdW50JnNvdXJjZT1sb2dpblNjcmVlbiIsImNzcmZUb2tlbiI6IjY1OWE1MWIxMjQ4NDAyNWM4NDE3MzVlZThkMzIwMTQzNjczMDA3ZmNlYjJjZjhjZGYyZjBhZTcyY2M3ZDJhNTIiLCJsb2dpblR5cGUiOiJnb29nbGVCdXR0b24iLCJhbm9ueW1vdXNJZCI6ImU2YTUwZTNmLTRhMzYtNDk4Mi1iOWExLTI0NTliOTUwYzllMCIsIm1hcmtldGluZ0NvbnNlbnQiOm51bGwsImV4cGVyaW1lbnQiOm51bGx9&scope=profile+email&prompt=select_account&redirect_uri=https%3A%2F%2Fid.atlassian.com%2Flogin%2Fgoogle&client_id=596149463257-9oquqfivs9on8t8erq23c8qso6vk3cp1.apps.googleusercontent.com&code_challenge=-83j-rMV4rrwtiNZ_3ezWb7M3hWjxfsLL0e588GcrOo&code_challenge_method=S256&response_type=code&flowName=GeneralOAuthFlow line 1 > eval line 1454 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+1643281610191	Marionette	INFO	Stopped listening on port 51618
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1643281642611	geckodriver	INFO	Listening on 127.0.0.1:51703
+1643281645687	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51704" "-no-remote" "-profile" "C:\\Users\\Free\\AppData\\Local\\Temp\\rust_mozprofileIkqPrc"
+1643281645960	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Free\\AppData\\Local\\Temp\\rust_mozprofileIkqPrc\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:51704/devtools/browser/9b3e496a-a810-4ab2-bf4c-9d7f38f771d4
+1643281648169	Marionette	INFO	Listening on port 51709
+1643281648383	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript warning: https://accounts.google.com/o/oauth2/auth?state=eyJzb3VyY2UiOiJsb2dpblNjcmVlbiIsInVzZXJGbG93IjpudWxsLCJpc1NsYWNrQXBwU291cmNlIjpudWxsLCJxdWVyeSI6Ij9hcHBsaWNhdGlvbj1qaXJhJmNvbnRpbnVlPWh0dHBzOi8vc2VldHJlZS5hdGxhc3NpYW4ubmV0L2xvZ2luP3JlZGlyZWN0Q291bnQlM0QxJTI2ZGVzdC11cmwlM0RodHRwcyUyNTNBJTI1MkYlMjUyRnNlZXRyZWUuYXRsYXNzaWFuLm5ldCUyNTJGamlyYSUyNTJGeW91ci13b3JrJTI2YXBwbGljYXRpb24lM0RqaXJhJmxvZ2luVHlwZT1nb29nbGVCdXR0b24mbG9naW5faGludD0mcHJvbXB0PXNlbGVjdF9hY2NvdW50JnNvdXJjZT1sb2dpblNjcmVlbiIsImNzcmZUb2tlbiI6IjY1OWE1MWIxMjQ4NDAyNWM4NDE3MzVlZThkMzIwMTQzNjczMDA3ZmNlYjJjZjhjZGYyZjBhZTcyY2M3ZDJhNTIiLCJsb2dpblR5cGUiOiJnb29nbGVCdXR0b24iLCJhbm9ueW1vdXNJZCI6ImU2YTUwZTNmLTRhMzYtNDk4Mi1iOWExLTI0NTliOTUwYzllMCIsIm1hcmtldGluZ0NvbnNlbnQiOm51bGwsImV4cGVyaW1lbnQiOm51bGx9&scope=profile+email&prompt=select_account&redirect_uri=https%3A%2F%2Fid.atlassian.com%2Flogin%2Fgoogle&client_id=596149463257-9oquqfivs9on8t8erq23c8qso6vk3cp1.apps.googleusercontent.com&code_challenge=-83j-rMV4rrwtiNZ_3ezWb7M3hWjxfsLL0e588GcrOo&code_challenge_method=S256&response_type=code&flowName=GeneralOAuthFlow line 1 > eval line 5100 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/modules/LoginManagerChild.jsm, line 194: NS_ERROR_XPC_JAVASCRIPT_ERROR_WITH_DETAILS: [JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]'[JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]' when calling method: [nsIAutoCompletePopup::selectedIndex]
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript warning: https://accounts.google.com/o/oauth2/auth?state=eyJzb3VyY2UiOiJsb2dpblNjcmVlbiIsInVzZXJGbG93IjpudWxsLCJpc1NsYWNrQXBwU291cmNlIjpudWxsLCJxdWVyeSI6Ij9hcHBsaWNhdGlvbj1qaXJhJmNvbnRpbnVlPWh0dHBzOi8vc2VldHJlZS5hdGxhc3NpYW4ubmV0L2xvZ2luP3JlZGlyZWN0Q291bnQlM0QxJTI2ZGVzdC11cmwlM0RodHRwcyUyNTNBJTI1MkYlMjUyRnNlZXRyZWUuYXRsYXNzaWFuLm5ldCUyNTJGamlyYSUyNTJGeW91ci13b3JrJTI2YXBwbGljYXRpb24lM0RqaXJhJmxvZ2luVHlwZT1nb29nbGVCdXR0b24mbG9naW5faGludD0mcHJvbXB0PXNlbGVjdF9hY2NvdW50JnNvdXJjZT1sb2dpblNjcmVlbiIsImNzcmZUb2tlbiI6IjY1OWE1MWIxMjQ4NDAyNWM4NDE3MzVlZThkMzIwMTQzNjczMDA3ZmNlYjJjZjhjZGYyZjBhZTcyY2M3ZDJhNTIiLCJsb2dpblR5cGUiOiJnb29nbGVCdXR0b24iLCJhbm9ueW1vdXNJZCI6ImU2YTUwZTNmLTRhMzYtNDk4Mi1iOWExLTI0NTliOTUwYzllMCIsIm1hcmtldGluZ0NvbnNlbnQiOm51bGwsImV4cGVyaW1lbnQiOm51bGx9&scope=profile+email&prompt=select_account&redirect_uri=https%3A%2F%2Fid.atlassian.com%2Flogin%2Fgoogle&client_id=596149463257-9oquqfivs9on8t8erq23c8qso6vk3cp1.apps.googleusercontent.com&code_challenge=-83j-rMV4rrwtiNZ_3ezWb7M3hWjxfsLL0e588GcrOo&code_challenge_method=S256&response_type=code&flowName=GeneralOAuthFlow line 1 > eval line 3644 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://accounts.google.com"
+JavaScript error: resource://gre/modules/LoginManagerParent.jsm, line 136: TypeError: gRecipeManager is null
+1643281675952	Marionette	INFO	Stopped listening on port 51709
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.

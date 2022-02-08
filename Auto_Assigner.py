@@ -133,17 +133,17 @@ def get_user_id(team):
 
 # For choosing the relevant team - return a string with the wanted team name
 def team_selector():
-    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    teams = ["Alignment", "Final Review", "Index", "Labeling", "Newcomers", "Refining", "Review Reports", "Scoring",
-             "Scoring diagnosis", "Touchups", "Open"]
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    teams = ["Alignment", "Final_Review", "Index", "Labeling", "Newcomers", "Refining", "Review_Reports", "Scoring",
+             "Scoring_Diagnosis", "Touchups", "Open"]
     user_choose = input(
         f"\nPlease choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - Newcomers\n"
         + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
     check_input = digits_input_validation(user_choose)
-    while user_choose not in numbers and not check_input:
+    while user_choose not in numbers or not check_input:
         print("\nPlease enter a valid option!")
         user_choose = input(
-            f"Please choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
+            f"\nPlease choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
             f"Newcomers\n "
             f"5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
         check_input = digits_input_validation(user_choose)
@@ -153,36 +153,80 @@ def team_selector():
 
 # For removing the absent people from the "ops" dict
 def absent_people(team):
-    absent = []
     absence = input("\nSomeone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
     input_check = digits_input_validation(absence)
-    while absence != "0" and absence != "1" and not input_check:  # For checking invalid inputs
+    team_amount = len(ops[team])
+    i = 0
+
+    while (absence != "0" and absence != "1") or not input_check:  # For checking invalid inputs
         print("\nPlease enter a valid option!")
         absence = input("Someone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
         input_check = digits_input_validation(absence)
     absence = int(absence)
     if absence == 1:  # If someone is missing
-        for worker in ops[team]:
-            res = input("\nIs {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
+        while i < team_amount:
+            res = input("\nIs {} is missing today?\n0 for No\n1 for Yes\n".format(ops[team][i]['name']))
             input_check = digits_input_validation(res)
-            while res != "0" and res != "1" and not input_check:  # For checking invalid inputs
+            while (res != "0" and res != "1") or not input_check:  # For checking invalid inputs
                 print("\nPlease enter a valid option!")
-                res = input("Is {} is missing today?\n0 for No\n1 for Yes\n".format(worker))
+                res = input("Is {} is missing today?\n0 for No\n1 for Yes\n".format(ops[team][i]['name']))
                 input_check = digits_input_validation(res)
             res = int(res)
-            if res == 1:
-                absent.append(worker)
-        for name in absent:  # Removing the missing people from ops dictionary
-            print("Removing {}!!!\n".format(name))
-            ops[team].pop(name)
+            if res == 0:
+                i += 1
+            else:
+                print("Removing {}!!!\n".format(ops[team][i]['name']))
+                ops[team].pop(i)
+            team_amount = len(ops[team])
         if not ops[team]:
             print("No one is available today!")
             exit(1)
     print("\nThe team today:")
     for worker in ops[team]:
         print(worker['name'])
-    print("\n")
-    return ops
+
+
+# For adding guys from other teams to the relevant team
+def get_new_guys(team):
+    new_guys = []
+    new_ppl = input("\nWill you have guys from other teams today?\n0 for No\n1 for Yes\n")
+    input_check = digits_input_validation(new_ppl)
+
+    while (new_ppl != "0" and new_ppl != "1") or not input_check:
+        print("\nPlease enter a valid option!")
+        new_ppl = input("\nYou will have guys from other teams today?\n0 for No\n1 for Yes\n")
+        input_check = digits_input_validation(new_ppl)
+    new_ppl = int(new_ppl)
+    if new_ppl == 1:
+        print("\nPlease choose the new guy team:")
+        sub_team = team_selector()
+        for worker in ops[sub_team]:
+            new_guy = input("\nWill {} join to your team?\n0 for No\n1 for Yes\n".format(worker["name"]))
+            input_check = digits_input_validation(new_guy)
+            while (new_guy != "0" and new_guy != "1") or not input_check:  # For checking invalid inputs
+                print("\nPlease enter a valid option!")
+                new_guy = input("\nWill {} join to your team?\n0 for No\n1 for Yes\n".format(worker["name"]))
+                input_check = digits_input_validation(new_guy)
+            new_guy = int(new_guy)
+            if new_guy == 1:
+                new_guys.append(worker)
+            elif new_guy == 0:
+                continue
+        for worker in new_guys:
+            ops[team].append(worker)
+        other_team = input("\nWill someone from another team will join to your team?\n0 for No\n1 for Yes\n")
+        input_check = digits_input_validation(other_team)
+        while (other_team != "0" and other_team != "1") or not input_check:
+            print("\nPlease enter a valid option!")
+            new_ppl = input("\nWill someone from another team will join to your team?\n0 for No\n1 for Yes\n")
+            input_check = digits_input_validation(new_ppl)
+        other_team = int(other_team)
+        if other_team == 0:
+            return
+        else:
+            get_new_guys(team)
+    else:
+        return
 
 
 # For login into Jira api
@@ -241,8 +285,6 @@ def get_users_tickets_amount(user_name, user_key, team_jql):
 def get_team_assignments_amounts(team_name, team_jql):
     for user in ops[team_name]:
         user["amount_of_tickets"] = get_users_tickets_amount(user["name"], user["key"], team_jql)
-        # print(f"\n{user['name']} has:")
-        # print(str(user["amount_of_tickets"]) + " assigned tickets")
 
 
 # Builds the Analysis Center File in case of need
@@ -322,6 +364,7 @@ def main():
     ops = read_analisys_center()
     team = team_selector()
     absent_people(team)
+    get_new_guys(team)
     team_jql = get_jql(filters[team])
     current_time = get_current_time()
     while (current_time >= 9) and (current_time <= 18):
