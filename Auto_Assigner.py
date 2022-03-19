@@ -3,89 +3,6 @@ from datetime import datetime
 from jira import JIRA
 import json
 
-# ops = {
-#     "Alignment": {"Anastasiia Rodak": ["anrod@ciklum.com", ""],
-#                   "Daryna Vozdihan": ["dvoz@ciklum.com", ""],
-#                   "Liliia Zadorozhna": ["liz@ciklum.com", ""],
-#                   "Natalia Didych": ["ndi@ciklum.com", ""],
-#                   "Oksana Levchenko": ["oksl@ciklum.com", ""],
-#                   "Yulia Krupa": ["yukru@ciklum.com", ""]},
-#
-#     "Final_Review": {"Andrii Mandolina": ["anman@ciklum.com", ""],
-#                      "Iryna Kachmar": ["ikac@ciklum.com", ""],
-#                      "Iryna Kolida": ["ikol@ciklum.com", ""],
-#                      "Oleksandr Kukharchuk": ["okuk@ciklum.com", ""],
-#                      "Rostyslav Hasiuk": ["rhas@ciklum.com", ""],
-#                      "Yaryna Tkachyk": ["yatk@ciklum.com", ""]},
-#
-#     "Index": {"Anastasiia Movchan": ["amov@ciklum.com", ""],
-#               "Anastasiia Shelkeyeva": ["ashel@ciklum.com", ""],
-#               "Dmytro Husakivskyi": ["dhus@ciklum.com", ""],
-#               "Inna Pas": ["inp@ciklum.com", ""],
-#               "Iryna Bolyukh": ["irbo@ciklum.com", ""],
-#               "Kateryna Hulchuk": ["khul@ciklum.com", ""],
-#               "Oksana Puchynska": ["okpu@ciklum.com", ""],
-#               "Olena Frankiv": ["ofr@ciklum.com", ""],
-#               "Tetiana Iarmoliuk": ["teia@ciklum.com", ""],
-#               "Valeriia Feshchenko": ["vafe@ciklum.com", ""]},
-#
-#     "Labeling": {"Alisa Dobrovolska": ["aldob@ciklum.com", ""],
-#                  "Tetyana Tananayska": ["tta@ciklum.com", ""],
-#                  "Tetyana Tkachenko": ["ttka@ciklum.com", ""],
-#                  "Yuriy Bilyk ": ["yubil@ciklum.com", ""]},
-#
-#     "Newcomers": {"Lidiia Fedorova": ["life@ciklum.com", ""],
-#                   "Olena Shkarpinets": ["olshk@ciklum.com", ""],
-#                   "Rostyslav Barabash": ["rbar@ciklum.com", ""],
-#                   "Tetiana Petriv": ["tatp@ciklum.com", ""],
-#                   "Uliana Komiakovych": ["uko@ciklum.com", ""]},
-#
-#     "Refining": {"Andrii Nikolaiev": ["annik@ciklum.com", ""],
-#                  "Dmytro Bushtyn": ["dmbus@ciklum.com", ""],
-#                  "Khrystyna Marynovych": ["khrm@ciklum.com", ""],
-#                  "Lyubomyra Klymkovych": ["lykl@ciklum.com", ""],
-#                  "Oksana Moravska": ["oxm@ciklum.com", ""]},
-#
-#     "Review_Reports": {"Inna Burlaka": ["inbu@ciklum.com", ""],
-#                        "Khrystyna Tsebak": ["khts@ciklum.com", ""],
-#                        "Lev Kuts": ["leku@ciklum.com", ""],
-#                        "Volodymyr Ploshchanskyi": ["vopl@ciklum.com", ""]},
-#
-#     "Scoring": {"Alina Tsaruk": ["altsa@ciklum.com", ""],
-#                 "Anastasiia Kauta": ["akau@ciklum.com", ""],
-#                 "Anastasiya Ilnytska": ["anil@ciklum.com", ""],
-#                 "Andrii Ilchyshyn": ["ailc@ciklum.com", ""],
-#                 "Nazar Khibeba": ["khn@ciklum.com", ""],
-#                 "Olga Kuzmyn": ["olgku@ciklum.com", ""],
-#                 "Olga Martyniuk": ["olgma@ciklum.com", ""],
-#                 "Sofia Kalanchova": ["soka@ciklum.com", ""],
-#                 "Solomiia Zakharchyn": ["soza@ciklum.com", ""],
-#                 "Vasyl Panko": ["vapan@ciklum.com", ""]},
-#
-#     "Scoring_Diagnosis": {"Ivan Batiuchok": ["ibat@ciklum.com", ""],
-#                           "Kateryna Lys": ["klys@ciklum.com", ""],
-#                           "Marta Susulovska": ["msus@ciklum.com", ""],
-#                           "Olga Zhelem": ["olgz@ciklum.com", ""]},
-#
-#     "Touchups": {"Hanna Ellanska": ["hel@ciklum.com", ""],
-#                  "Kateryna Buriak": ["kabu@ciklum.com", ""],
-#                  "Mariana Mrii": ["mmr@ciklum.com", ""],
-#                  "Mariia Bakush": ["mabak@ciklum.com", ""],
-#                  "Polina Osipchuk": ["poos@ciklum.com", ""],
-#                  "Roman Oliinyk": ["roli@ciklum.com", ""],
-#                  "Uliana Samotii": ["uls@ciklum.com", ""],
-#                  "Valeriia Piskunova": ["vpis@ciklum.com", ""],
-#                  "Vira Lyzohub": ["vvil@ciklum.com", ""],
-#                  "Vitaliya Lozynska": ["vloz@ciklum.com", ""],
-#                  "Yaroslav Tkachuk": ["ytka@ciklum.com", ""],
-#                  "Yurii Martsiv": ["yumar@ciklum.com", ""]},
-#
-#     "Open": {"Aman Abo Roken": ["aman@seetree.co", ""],
-#              "Enab Halabi": ["enab@seetree.co", ""],
-#              "Haifa Mansour": ["haifa@seetree.co", ""],
-#              "Noor Wehbi": ["noor@seetree.co", ""],
-#              "Weam Wehbi": ["weam@seetree.co", ""]}}
-
 filters = {"Alignment": "11111",  # TODO: Add all the filters to each team
            "Final_Review": "",
            "Index": "",
@@ -136,11 +53,12 @@ def team_selector():
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     teams = ["Alignment", "Final_Review", "Index", "Labeling", "Newcomers", "Refining", "Review_Reports", "Scoring",
              "Scoring_Diagnosis", "Touchups", "Open"]
+    # Validation of the user input
     user_choose = input(
         f"\nPlease choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - Newcomers\n"
         + "5 - Refining\n6 - Review_Reports\n7 - Scoring\n8 - Scoring_Diagnosis\n9 - Touchups\n10 - Open\n")
     check_input = digits_input_validation(user_choose)
-    while user_choose not in numbers or not check_input:
+    while user_choose not in numbers or not check_input:  # For checking invalid inputs
         print("\nPlease enter a valid option!")
         user_choose = input(
             f"\nPlease choose the relevant team:\n0 - Alignment\n1 - Final_Review\n2 - Index\n3 - Labeling\n4 - "
@@ -158,7 +76,8 @@ def absent_people(team):
     team_amount = len(ops[team])
     i = 0
 
-    while (absence != "0" and absence != "1") or not input_check:  # For checking invalid inputs
+    # Validation of the user input
+    while (absence != "0" and absence != "1") or not input_check:
         print("\nPlease enter a valid option!")
         absence = input("Someone is missing today from the {} team?\n0 for No\n1 for Yes\n".format(team))
         input_check = digits_input_validation(absence)
@@ -175,15 +94,16 @@ def absent_people(team):
             if res == 0:
                 i += 1
             else:
-                print("Removing {}!!!\n".format(ops[team][i]['name']))
+                print("Removing {}!!!\n".format(ops[team][i]['name']))  # Removing the chosen worker
                 ops[team].pop(i)
             team_amount = len(ops[team])
         if not ops[team]:
             print("No one is available today!")
             exit(1)
-    print("\nThe team today:")
-    for worker in ops[team]:
-        print(worker['name'])
+    else:  # If no-one missing
+        print("\nThe team today:")
+        for worker in ops[team]:
+            print(worker['name'])
 
 
 # For adding guys from other teams to the relevant team
@@ -197,10 +117,11 @@ def get_new_guys(team):
         new_ppl = input("\nYou will have guys from other teams today?\n0 for No\n1 for Yes\n")
         input_check = digits_input_validation(new_ppl)
     new_ppl = int(new_ppl)
-    if new_ppl == 1:
-        print("\nPlease choose the new guy team:")
-        sub_team = team_selector()
-        for worker in ops[sub_team]:
+
+    if new_ppl == 1:  # If someone from other team is joining
+        print("\nPlease choose the new guy's team:")
+        new_guy_team = team_selector()
+        for worker in ops[new_guy_team]:  # Iterate through the new guy's team
             new_guy = input("\nWill {} join to your team?\n0 for No\n1 for Yes\n".format(worker["name"]))
             input_check = digits_input_validation(new_guy)
             while (new_guy != "0" and new_guy != "1") or not input_check:  # For checking invalid inputs
@@ -208,15 +129,15 @@ def get_new_guys(team):
                 new_guy = input("\nWill {} join to your team?\n0 for No\n1 for Yes\n".format(worker["name"]))
                 input_check = digits_input_validation(new_guy)
             new_guy = int(new_guy)
-            if new_guy == 1:
+            if new_guy == 1:  # Adding the new guy to the new_guys lists.
                 new_guys.append(worker)
             elif new_guy == 0:
                 continue
-        for worker in new_guys:
+        for worker in new_guys:  # Adding all the new guys from the new_guys list to the user team
             ops[team].append(worker)
         other_team = input("\nWill someone from another team will join to your team?\n0 for No\n1 for Yes\n")
         input_check = digits_input_validation(other_team)
-        while (other_team != "0" and other_team != "1") or not input_check:
+        while (other_team != "0" and other_team != "1") or not input_check:  # For checking invalid inputs
             print("\nPlease enter a valid option!")
             new_ppl = input("\nWill someone from another team will join to your team?\n0 for No\n1 for Yes\n")
             input_check = digits_input_validation(new_ppl)
@@ -270,9 +191,11 @@ def get_jql_tickets(jql):
 def get_users_tickets_amount(user_name, user_key, team_jql):
     print("\n" + user_name)
     jql = team_jql.split(" assignee = EMPTY")
+    print(jql[0] + f" assignee = {user_key}")
     user_tickets = get_jql_tickets(jql[0] + f" assignee = {user_key}")
     user_tickets_amount = len(user_tickets)
-    if user_tickets_amount == 0:
+
+    if user_tickets_amount == 0:  # While worker has no tickets
         print(f"{user_name} has no tickets!")
         time.sleep(2)
     else:
@@ -301,7 +224,7 @@ def workers_constructor():
             workers[team].append(x.__dict__)
 
 
-# Transforms the workers' dict to json file
+# Transforms the workers dict to json file
 def workers_to_json():
     json_workers = json.dumps(workers)
     f = open("Analysis_Center.txt", "x")
@@ -351,6 +274,7 @@ def auto_assigner(team, team_jql):
         second += 1
 
 
+# For getting the current time
 def get_current_time():
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
@@ -358,8 +282,14 @@ def get_current_time():
     return int_current_time
 
 
+# For recreate Analysis Center json file
+def recreate_analysis_centre():
+    workers_constructor()
+
+
 def main():
     global ops
+
     login()
     ops = read_analisys_center()
     team = team_selector()
